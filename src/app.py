@@ -88,7 +88,13 @@ def root():
 
 @app.get("/activities")
 def get_activities():
-    return activities
+    # Add a 'no_participants' flag for each activity if needed
+    activities_with_flag = {}
+    for name, details in activities.items():
+        details_copy = details.copy()
+        details_copy["no_participants"] = len(details_copy["participants"]) == 0
+        activities_with_flag[name] = details_copy
+    return activities_with_flag
 
 
 @app.post("/activities/{activity_name}/signup")
